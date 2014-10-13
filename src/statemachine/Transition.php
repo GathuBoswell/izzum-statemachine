@@ -27,6 +27,7 @@ use izzum\statemachine\Context;
  * (for example as their origin/from state), make sure it is the exact same reference to 
  * that State object and vice versa. 
  * The LoaderArray class will take care of this itself.
+ * TODO: use flyweight pattern
  * 
  * A subclassof Transition might provide alternative behaviour eg: 
  * - an application performance optimized prioritized transition, 

@@ -9,6 +9,7 @@ namespace izzum\statemachine;
  * TRICKY: a State instance can (and should) be shared by multiple Transition
  * objects when it is the same Staet for their origin/from State.
  * The LoaderArray class automatically takes care of this for us.
+ * TODO: use flyweight pattern
  * 
  * the order of Transitions *might* be important.
  * whenever a State is asked for it's transitions, the first transition might

@@ -68,6 +68,7 @@ class LoaderArray implements Loader {
      */
     public function getTransitions()
     {
+        //TODO: refactor to use flyweight pattern: reuse transitions and states.
         $states = array();
         $transitions = array();
         $output = array();
