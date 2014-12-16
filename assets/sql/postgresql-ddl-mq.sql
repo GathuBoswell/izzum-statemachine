@@ -10,8 +10,9 @@ CREATE TABLE statemachine_transitions_configuration (
     throttle_interval INT NULL,
     throttle_key VARCHAR NULL,
     stop_after_transition bool DEFAULT false,
-    CONSTRAINT fk_sm_t_c_sf_sm_s_m_s FOREIGN KEY (machine, state_from, state_to) REFERENCES statemachine_transitions (machine, state_from, state_to) ON UPDATE CASCADE,
-    CONSTRAINT c_sm_t_c_b CHECK(backoff ~* '^[\d]+((-)[\d]+)+$'),
+    CONSTRAINT fk_sm_t_c_sf_sm_s_m_s FOREIGN KEY (machine, state_from) REFERENCES statemachine_states (machine, state) ON UPDATE CASCADE,
+    CONSTRAINT fk_sm_t_c_st_sm_s_m_s FOREIGN KEY (machine, state_to) REFERENCES statemachine_states (machine, state) ON UPDATE CASCADE,
+    CONSTRAINT c_sm_t_c_b CHECK(backoff ~* '^[\d]+((-)[\d]+)*$'),
     CONSTRAINT u_sm_t_c_m_st_sf UNIQUE (machine, state_to, state_from),
     PRIMARY KEY  (id)
 );
@@ -41,7 +42,8 @@ COMMENT ON COLUMN statemachine_transitions_configuration.throttle_interval IS '
 Certain transitions might only be allowed to take place every x seconds.
 A throttle interval operates on every transition that is configured by the throttle key
 and should make sure only 1 transition for that state is allowed/scheduled on every
-x seconds by the scheduling algorithm for the queue.';
+x seconds by the scheduling algorithm for the queue.
+Throttling will be a bottleneck for the whole statemachine it operates on.';
 
 COMMENT ON COLUMN statemachine_transitions_configuration.throttle_key IS '
 Throttled transitions are coupled to a key that can be used as an identifier to the
@@ -72,5 +74,4 @@ In other words:
 - do not use throttling on a state that has multiple exit transitions
 - throttling only makes sense for a state that has 1 exit transition
 - backoff only makes sense for a state that has 1 exit transition';
-
 
