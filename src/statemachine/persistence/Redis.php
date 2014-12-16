@@ -141,9 +141,10 @@ class Redis extends Adapter implements Loader {
                         throw new Exception('authentication failed', Exception::PERSISTENCE_FAILED_TO_CONNECT);
                     }
                 }
+                //hook for subclass
+                $this->onConnect($this->redis);
             }
 
-            $this->onConnect($this->redis);
             return $this->redis;
 
         } catch (\Exception $e) {
